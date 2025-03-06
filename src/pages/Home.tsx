@@ -1,10 +1,11 @@
 import { getMoviesList } from "@/api/moviesApi";
+import ErrorBox from "@/components/common/ErrorBox";
 import MovieCard from "@/components/movies/MovieCard";
 import { Heading, Highlight, SimpleGrid, Skeleton, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
-  const { data, isLoading } = useQuery({ 
+  const { data, isLoading, refetch, isRefetching } = useQuery({ 
     queryKey: ['movies'], 
     queryFn: getMoviesList,
   });
@@ -32,6 +33,13 @@ export default function Home() {
       >
         Search, filter & sort movies from MoviesDB!
       </Text>
+      {hasApiError && (
+        <ErrorBox 
+          errorMessage={data.status_message} 
+          retryFunction={refetch} 
+          retryLoading={isRefetching}
+        />
+      )}
       <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} gap="6">
         {isLoading && (
           <>
@@ -41,7 +49,6 @@ export default function Home() {
             <Skeleton height="500px" />
           </>
         )}
-        {hasApiError && <p className="text-4xl font-bold text-center">{data.status_message}</p>}
         {hasData && data.results.map((movie) => (
           <MovieCard 
             key={movie.id}
