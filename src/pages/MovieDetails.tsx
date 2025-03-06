@@ -1,4 +1,5 @@
 import { getMovieDetails } from "@/api/moviesApi";
+import ErrorBox from "@/components/common/ErrorBox";
 import MovieDetailsView from "@/components/movies/MovieDetailsView";
 import { Button, GridItem, SimpleGrid, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ export default function MovieDetails() {
   });
 
   const hasData = data && "title" in data;
+  const hasApiError = data && "status_code" in data;
 
   return (
     <>
@@ -24,6 +26,13 @@ export default function MovieDetails() {
           </Link>
           <MovieDetailsView movieDetails={data} />
         </>
+      )}
+      {hasApiError && (
+        <ErrorBox 
+          errorMessage={data.status_message} 
+          retryFunction={refetch} 
+          retryLoading={isRefetching}
+        />
       )}
       {isLoading && (
         <SimpleGrid columns={{ md: 2 }} gap={12}>
