@@ -1,13 +1,18 @@
 import { getMoviesList } from "@/api/moviesApi";
 import ErrorBox from "@/components/common/ErrorBox";
+import Pagination from "@/components/common/Pagination";
 import MovieCard from "@/components/movies/MovieCard";
 import { Heading, Highlight, SimpleGrid, Skeleton, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router";
 
 export default function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page');
+
   const { data, isLoading, refetch, isRefetching } = useQuery({ 
-    queryKey: ['movies'], 
-    queryFn: getMoviesList,
+    queryKey: ['movies', page], 
+    queryFn: () => getMoviesList(page ? parseInt(page) : 1),
   });
 
   const hasData = data && "results" in data;
@@ -40,7 +45,7 @@ export default function Home() {
           retryLoading={isRefetching}
         />
       )}
-      <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} gap="6">
+      <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} gap="6" mb={24}>
         {isLoading && (
           <>
             <Skeleton height="500px" />
@@ -60,6 +65,14 @@ export default function Home() {
           />
         ))}
       </SimpleGrid>
+      {hasData && (
+        <Pagination
+          count={500 * data.results.length}
+          page={page ? parseInt(page) : 1}
+          pageSize={data.results.length}
+          onPageChange={(nextPage) => setSearchParams({ page: nextPage.toString() })}
+        />
+      )}
     </div>
   )
 }
