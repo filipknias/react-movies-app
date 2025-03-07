@@ -3,12 +3,13 @@ import ErrorBox from "@/components/common/ErrorBox";
 import MovieDetailsView from "@/components/movies/MovieDetailsView";
 import { Button, GridItem, SimpleGrid, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export default function MovieDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { data, isLoading, refetch, isRefetching } = useQuery({ 
+  const { data, isLoading, refetch, isRefetching, error } = useQuery({ 
     queryKey: ['movie', id], 
     queryFn: () => getMovieDetails(id as string),
     enabled: id !== undefined,
@@ -21,15 +22,26 @@ export default function MovieDetails() {
     <>
       {hasData && (
         <>
-          <Link to="/">
-            <Button bg="teal.500" mb={12}>Return to dashboard</Button>
-          </Link>
+          <Button 
+            onClick={() => navigate(-1)} 
+            bg="teal.500" 
+            mb={12}
+          >
+            Return to dashboard
+          </Button>
           <MovieDetailsView movieDetails={data} />
         </>
       )}
       {hasApiError && (
         <ErrorBox 
           errorMessage={data.status_message} 
+          retryFunction={refetch} 
+          retryLoading={isRefetching}
+        />
+      )}
+      {error && (
+        <ErrorBox 
+          errorMessage={error.message} 
           retryFunction={refetch} 
           retryLoading={isRefetching}
         />
