@@ -1,4 +1,4 @@
-import { HStack, Stack } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -15,12 +15,13 @@ type PaginationProps = {
 
 export default function Pagination({ page, count, pageSize, onPageChange }: PaginationProps) {
   return (
-    <Stack gap="4">
+    <VStack gap="4">
       <PaginationRoot
         page={page}
         count={count}
         pageSize={pageSize}
         onPageChange={(e) => onPageChange(e.page)}
+        size={{ smDown: "sm", md: "md" }}
       >
         <HStack>
           <PaginationPrevTrigger />
@@ -28,6 +29,6 @@ export default function Pagination({ page, count, pageSize, onPageChange }: Pagi
           <PaginationNextTrigger />
         </HStack>
       </PaginationRoot>
-    </Stack>
+    </VStack>
   )
 }

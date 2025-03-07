@@ -22,9 +22,7 @@ export default function Home() {
   const sortBy = searchParams.get('sort_by');
 
   const filtersObj = useMemo(() => {
-    const filters: MoviesListFilters = {
-      with_original_language: 'en',
-    };
+    const filters: MoviesListFilters = {};
     if (language) {
       filters.with_original_language = language;
       filters.language = language;
@@ -102,7 +100,7 @@ export default function Home() {
       </SimpleGrid>
       {hasData && (
         <Pagination
-          count={500 * data.results.length}
+          count={data.total_results}
           page={page ? parseInt(page) : 1}
           pageSize={data.results.length}
           onPageChange={(nextPage) => handlePageChange(nextPage.toString())}
