@@ -37,7 +37,7 @@ export default function Home() {
     return filters;
   }, [language, genre, sortBy]);
 
-  const { data, isLoading, refetch, isRefetching } = useQuery({ 
+  const { data, isLoading, refetch, isRefetching, error } = useQuery({ 
     queryKey: ['movies', page, language, genre, sortBy], 
     queryFn: () => getMoviesList(page ? parseInt(page) : 1, filtersObj),
   });
@@ -73,6 +73,13 @@ export default function Home() {
         Search, filter & sort movies from MoviesDB!
       </Text>
       <FiltersGroup />
+      {error && (
+        <ErrorBox 
+          errorMessage={error.message} 
+          retryFunction={refetch} 
+          retryLoading={isRefetching}
+        />
+      )}
       {hasApiError && (
         <ErrorBox 
           errorMessage={data.status_message} 
