@@ -21,7 +21,7 @@ export default function Pagination({ page, count, pageSize, onPageChange }: Pagi
         count={count}
         pageSize={pageSize}
         onPageChange={(e) => onPageChange(e.page)}
-        size={{ smDown: "sm", md: "md" }}
+        size="xs"
       >
         <HStack>
           <PaginationPrevTrigger />

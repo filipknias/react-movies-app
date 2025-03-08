@@ -18,7 +18,7 @@ export default function MovieCard({
   id,
 }: MovieCardProps) {
   return (
-    <Card.Root className="overflow-hidden">
+    <Card.Root className="overflow-hidden h-full">
       <Image 
         src={`https://image.tmdb.org/t/p/w200/${posterPath}`} 
         alt={title}
