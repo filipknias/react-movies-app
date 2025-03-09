@@ -49,7 +49,7 @@ export default function Home() {
   const isEmptyResults = hasData && data.results.length === 0;
 
   const handlePageChange = (nextPage: string) => {
-    setApiQuery({ key: SearchParams.PAGE, value: nextPage });
+    setApiQuery({ [SearchParams.PAGE]: nextPage });
     window.scrollTo(0, 0);
   };
   

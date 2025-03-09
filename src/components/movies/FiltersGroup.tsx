@@ -14,7 +14,7 @@ import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 export default function FiltersGroup() {
-  const { getApiQuery, setApiQuery, deleteApiQuery } = useApiQuery();
+  const { getApiQuery, setApiQuery } = useApiQuery();
   const initialLanguage = getApiQuery(SearchParams.WITH_ORIGINAL_LANGUAGE);
   const initialGenre = getApiQuery(SearchParams.WITH_GENRES);
   const initialSort = getApiQuery(SearchParams.SORT_BY);
@@ -65,11 +65,13 @@ export default function FiltersGroup() {
   });
 
   const handleSelectChange = (key: string, value: string|undefined) => {
-    if (value) {
-      setApiQuery({ key, value });
-    } else {
-      deleteApiQuery(key);
+    const newQueryObj: Record<string, string|undefined> = {
+      [key]: value,
+    };
+    if (key !== SearchParams.SORT_BY) {
+      newQueryObj[SearchParams.PAGE] = '1';
     }
+    setApiQuery(newQueryObj);
   };
 
   return (
@@ -88,7 +90,7 @@ export default function FiltersGroup() {
               width="200px" 
               position="relative"
               onValueChange={(e) => handleSelectChange(SearchParams.WITH_ORIGINAL_LANGUAGE, e.value[0])}
-              highlightedValue={initialLanguage || null}
+              defaultValue={initialLanguage ? [initialLanguage] : undefined} 
             >
               <SelectLabel>Language</SelectLabel>
               <SelectTrigger clearable>
@@ -110,8 +112,7 @@ export default function FiltersGroup() {
               width="200px" 
               position="relative"
               onValueChange={(e) => handleSelectChange(SearchParams.WITH_GENRES, e.value[0])}
-              highlightedValue={initialGenre || null}
-
+              defaultValue={initialGenre ? [initialGenre] : undefined} 
             >
               <SelectLabel>Genre</SelectLabel>
               <SelectTrigger clearable>
@@ -132,7 +133,7 @@ export default function FiltersGroup() {
               width="200px" 
               position="relative"
               onValueChange={(e) => handleSelectChange(SearchParams.SORT_BY, e.value[0])}
-              highlightedValue={initialSort || null}
+              defaultValue={initialSort ? [initialSort] : undefined} 
             >
               <SelectLabel>Sort By</SelectLabel>
               <SelectTrigger clearable>

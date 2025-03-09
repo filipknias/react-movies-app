@@ -7,27 +7,17 @@ export default function useApiQuery() {
     return searchParams.get(key);
   };
 
-  const setApiQuery = (query: { key: string; value: string; }) => {
-    const { key, value } = query;
+  const setApiQuery = (query: Record<string, string|undefined>) => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set(key, value);
+    Object.entries(query).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
     setSearchParams(newParams);
   };
 
-  const clearApiQuery = () => {
-    setSearchParams({});
-  };
-  
-  const deleteApiQuery = (key: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.delete(key);
-    setSearchParams(newParams);
-  };
-
-  return { 
-    getApiQuery, 
-    setApiQuery, 
-    clearApiQuery,
-    deleteApiQuery,
-  };
+  return { getApiQuery, setApiQuery };
 }
