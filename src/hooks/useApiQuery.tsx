@@ -14,5 +14,9 @@ export default function useApiQuery() {
     setSearchParams(newParams);
   };
 
-  return { getApiQuery, setApiQuery };
+  const clearApiQuery = () => {
+    setSearchParams({});
+  };
+
+  return { getApiQuery, setApiQuery, clearApiQuery };
 }

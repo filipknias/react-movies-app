@@ -8,13 +8,15 @@ import {
   SelectTrigger, 
   SelectValueText,
   createListCollection,
-  Flex
+  Flex,
+  Button
 } from "@chakra-ui/react";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { IoRefresh } from "react-icons/io5";
 
 export default function FiltersGroup() {
-  const { getApiQuery, setApiQuery } = useApiQuery();
+  const { getApiQuery, setApiQuery, clearApiQuery } = useApiQuery();
   const initialLanguage = getApiQuery('with_original_language');
   const initialGenre = getApiQuery('with_genres');
   const initialSort = getApiQuery('sort_by');
@@ -67,9 +69,9 @@ export default function FiltersGroup() {
   return (
     <>
       <Flex 
-        direction={{ smDown: "column", md: "row" }} 
+        direction={{ mdDown: "column", lg: "row" }} 
         justify="center" 
-        align="center" 
+        align={{ mdDown: "center", md: "flex-end" }} 
         gap={8}
         mb={8}
       >
@@ -136,7 +138,14 @@ export default function FiltersGroup() {
                   </SelectItem>
                 ))}
               </SelectContent>
-            </SelectRoot>
+          </SelectRoot>
+          <Button 
+            bg="teal.500" 
+            w={{ mdDown: "200px", lg: "auto" }}
+            onClick={clearApiQuery}
+          >
+            <IoRefresh /> Reset
+          </Button>
       </Flex>
     </>
   )
