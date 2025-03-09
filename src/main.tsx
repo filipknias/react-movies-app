@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Home from '@/pages/Home';
 import MovieDetails from '@/pages/MovieDetails';
+import NotFound from '@/pages/NotFound';
 import { Provider } from "@/components/ui/provider.tsx";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { Container, Theme } from "@chakra-ui/react";
@@ -21,7 +22,8 @@ createRoot(document.getElementById('root')!).render(
                 <Routes>
                   <Route index element={<Home />} />
                   <Route path="/movies/:id" element={<MovieDetails />} />
-              </Routes>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
             </BrowserRouter>
           </Container>
         </Theme>
