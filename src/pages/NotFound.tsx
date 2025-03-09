@@ -1,7 +1,10 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button, Container, Heading, Highlight, Text } from "@chakra-ui/react";
 import { Link } from "react-router";
 
 export default function NotFound() {
+  usePageTitle("Page Not Found");
+
   return (
     <Container py={24} textAlign="center">
       <Heading

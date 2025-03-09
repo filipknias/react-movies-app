@@ -1,3 +1,4 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { MovieDetails } from "@/types/models";
 import { formatDate } from "@/utilities/formatDate";
 import { 
@@ -18,6 +19,8 @@ type MovieDetailsViewProps = {
 };
 
 export default function MovieDetailsView({ movieDetails }: MovieDetailsViewProps) {
+  usePageTitle(movieDetails.title);
+
   return (
     <SimpleGrid columns={{ md: 2 }} gap={16}>
         <GridItem>
