@@ -10,17 +10,17 @@ import {
   Text, 
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router";
 import FiltersGroup from "@/components/movies/FiltersGroup";
 import { useMemo } from "react";
 import { motion } from "motion/react";
+import useApiQuery from "@/hooks/useApiQuery";
 
 export default function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page');
-  const language = searchParams.get('with_original_language');
-  const genre = searchParams.get('with_genres');
-  const sortBy = searchParams.get('sort_by');
+  const { getApiQuery, setApiQuery } = useApiQuery();
+  const page = getApiQuery('page');
+  const language = getApiQuery('with_original_language');
+  const genre = getApiQuery('with_genres');
+  const sortBy = getApiQuery('sort_by');
 
   const filtersObj = useMemo(() => {
     const filters: MoviesListFilters = {};
@@ -47,9 +47,7 @@ export default function Home() {
   const isEmptyResults = hasData && data.results.length === 0;
 
   const handlePageChange = (nextPage: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", nextPage);
-    setSearchParams(newParams);
+    setApiQuery({ key: "page", value: nextPage }, true);
   };
   
   return (

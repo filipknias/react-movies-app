@@ -1,4 +1,5 @@
 import { getLanguages, getGenres } from "@/api/moviesApi";
+import useApiQuery from "@/hooks/useApiQuery";
 import { 
   SelectContent, 
   SelectItem, 
@@ -11,13 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router";
 
 export default function FiltersGroup() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialLanguage = searchParams.get('with_original_language');
-  const initialGenre = searchParams.get('with_genres');
-  const initialSort = searchParams.get('sort_by');
+  const { getApiQuery, setApiQuery } = useApiQuery();
+  const initialLanguage = getApiQuery('with_original_language');
+  const initialGenre = getApiQuery('with_genres');
+  const initialSort = getApiQuery('sort_by');
 
   const [languagesQuery, genresQuery] = useQueries({ 
     queries: [
@@ -64,22 +64,22 @@ export default function FiltersGroup() {
     ],
   });
 
-  const handleFilterChange = (key: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set(key, value);
-    setSearchParams(newParams);
-  };
-
   return (
     <>
-      <Flex direction={{ smDown: "column", md: "row" }} justify="center" align="center" gap={8} mb={8}>
+      <Flex 
+        direction={{ smDown: "column", md: "row" }} 
+        justify="center" 
+        align="center" 
+        gap={8}
+        mb={8}
+      >
           {hasLanguagesData && (
             <SelectRoot  
               collection={languages} 
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => handleFilterChange('with_original_language', e.value[0])}
+              onValueChange={(e) => setApiQuery({ key: 'with_original_language', value: e.value[0] })}
               highlightedValue={initialLanguage || null}
             >
               <SelectLabel>Language</SelectLabel>
@@ -101,7 +101,7 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => handleFilterChange('with_genres', e.value[0])}
+              onValueChange={(e) => setApiQuery({ key: 'with_genres', value: e.value[0] })}
               highlightedValue={initialGenre || null}
             >
               <SelectLabel>Genre</SelectLabel>
@@ -122,7 +122,7 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => handleFilterChange('sort_by', e.value[0])}
+              onValueChange={(e) => setApiQuery({ key: 'sort_by', value: e.value[0] })}
               highlightedValue={initialSort || null}
             >
               <SelectLabel>Sort By</SelectLabel>
