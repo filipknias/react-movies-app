@@ -17,6 +17,17 @@ export default function useApiQuery() {
   const clearApiQuery = () => {
     setSearchParams({});
   };
+  
+  const deleteApiQuery = (key: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete(key);
+    setSearchParams(newParams);
+  };
 
-  return { getApiQuery, setApiQuery, clearApiQuery };
+  return { 
+    getApiQuery, 
+    setApiQuery, 
+    clearApiQuery,
+    deleteApiQuery,
+  };
 }

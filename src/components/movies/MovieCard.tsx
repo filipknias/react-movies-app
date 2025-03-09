@@ -32,7 +32,7 @@ export default function MovieCard({
             <Icon fontSize="sm" color="yellow.500">
               <FaStar />
             </Icon>
-            <Text fontWeight="medium">{votesAverage.toFixed(1)}</Text>
+            {votesAverage && <Text fontWeight="medium">{votesAverage.toFixed(1)}</Text>}
           </div>
         </div>
         <Card.Description mb={6}>

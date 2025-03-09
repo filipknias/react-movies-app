@@ -1,23 +1,20 @@
 import { getLanguages, getGenres } from "@/api/moviesApi";
 import { SearchParams } from "@/enums/searchParams";
 import useApiQuery from "@/hooks/useApiQuery";
-import { 
+import { Flex, createListCollection } from "@chakra-ui/react";
+import {
   SelectContent, 
   SelectItem, 
   SelectLabel, 
   SelectRoot, 
   SelectTrigger, 
   SelectValueText,
-  createListCollection,
-  Flex,
-  Button
-} from "@chakra-ui/react";
+} from "@/components/ui/select";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { IoRefresh } from "react-icons/io5";
 
 export default function FiltersGroup() {
-  const { getApiQuery, setApiQuery, clearApiQuery } = useApiQuery();
+  const { getApiQuery, setApiQuery, deleteApiQuery } = useApiQuery();
   const initialLanguage = getApiQuery(SearchParams.WITH_ORIGINAL_LANGUAGE);
   const initialGenre = getApiQuery(SearchParams.WITH_GENRES);
   const initialSort = getApiQuery(SearchParams.SORT_BY);
@@ -67,6 +64,14 @@ export default function FiltersGroup() {
     ],
   });
 
+  const handleSelectChange = (key: string, value: string|undefined) => {
+    if (value) {
+      setApiQuery({ key, value });
+    } else {
+      deleteApiQuery(key);
+    }
+  };
+
   return (
     <>
       <Flex 
@@ -82,11 +87,11 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: SearchParams.WITH_ORIGINAL_LANGUAGE, value: e.value[0] })}
+              onValueChange={(e) => handleSelectChange(SearchParams.WITH_ORIGINAL_LANGUAGE, e.value[0])}
               highlightedValue={initialLanguage || null}
             >
               <SelectLabel>Language</SelectLabel>
-              <SelectTrigger>
+              <SelectTrigger clearable>
                 <SelectValueText placeholder="Select language" />
               </SelectTrigger>
               <SelectContent className="absolute top-full w-full">
@@ -104,11 +109,12 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: SearchParams.WITH_GENRES, value: e.value[0] })}
+              onValueChange={(e) => handleSelectChange(SearchParams.WITH_GENRES, e.value[0])}
               highlightedValue={initialGenre || null}
+
             >
               <SelectLabel>Genre</SelectLabel>
-              <SelectTrigger>
+              <SelectTrigger clearable>
                 <SelectValueText placeholder="Select genre" />
               </SelectTrigger>
               <SelectContent className="absolute top-full w-full">
@@ -125,11 +131,11 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: SearchParams.SORT_BY, value: e.value[0] })}
+              onValueChange={(e) => handleSelectChange(SearchParams.SORT_BY, e.value[0])}
               highlightedValue={initialSort || null}
             >
               <SelectLabel>Sort By</SelectLabel>
-              <SelectTrigger>
+              <SelectTrigger clearable>
                 <SelectValueText placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent className="absolute top-full w-full">
@@ -140,13 +146,6 @@ export default function FiltersGroup() {
                 ))}
               </SelectContent>
           </SelectRoot>
-          <Button 
-            bg="teal.500" 
-            w={{ mdDown: "200px", lg: "auto" }}
-            onClick={clearApiQuery}
-          >
-            <IoRefresh /> Reset
-          </Button>
       </Flex>
     </>
   )
