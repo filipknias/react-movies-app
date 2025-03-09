@@ -66,7 +66,7 @@ export default function MovieDetailsView({ movieDetails }: MovieDetailsViewProps
           </Text>
           <HStack mb={12}>
             {movieDetails.spoken_languages.map((language) => (
-              <Badge key={language.iso_639_1} size="lg">{language.name}</Badge>
+              <Badge key={language.iso_639_1} size="lg">{language.english_name}</Badge>
             ))}
           </HStack>
           <Text 
