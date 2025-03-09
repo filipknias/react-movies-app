@@ -1,4 +1,5 @@
 import { getLanguages, getGenres } from "@/api/moviesApi";
+import { SearchParams } from "@/enums/searchParams";
 import useApiQuery from "@/hooks/useApiQuery";
 import { 
   SelectContent, 
@@ -17,9 +18,9 @@ import { IoRefresh } from "react-icons/io5";
 
 export default function FiltersGroup() {
   const { getApiQuery, setApiQuery, clearApiQuery } = useApiQuery();
-  const initialLanguage = getApiQuery('with_original_language');
-  const initialGenre = getApiQuery('with_genres');
-  const initialSort = getApiQuery('sort_by');
+  const initialLanguage = getApiQuery(SearchParams.WITH_ORIGINAL_LANGUAGE);
+  const initialGenre = getApiQuery(SearchParams.WITH_GENRES);
+  const initialSort = getApiQuery(SearchParams.SORT_BY);
 
   const [languagesQuery, genresQuery] = useQueries({ 
     queries: [
@@ -81,7 +82,7 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: 'with_original_language', value: e.value[0] })}
+              onValueChange={(e) => setApiQuery({ key: SearchParams.WITH_ORIGINAL_LANGUAGE, value: e.value[0] })}
               highlightedValue={initialLanguage || null}
             >
               <SelectLabel>Language</SelectLabel>
@@ -103,7 +104,7 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: 'with_genres', value: e.value[0] })}
+              onValueChange={(e) => setApiQuery({ key: SearchParams.WITH_GENRES, value: e.value[0] })}
               highlightedValue={initialGenre || null}
             >
               <SelectLabel>Genre</SelectLabel>
@@ -124,7 +125,7 @@ export default function FiltersGroup() {
               size="sm" 
               width="200px" 
               position="relative"
-              onValueChange={(e) => setApiQuery({ key: 'sort_by', value: e.value[0] })}
+              onValueChange={(e) => setApiQuery({ key: SearchParams.SORT_BY, value: e.value[0] })}
               highlightedValue={initialSort || null}
             >
               <SelectLabel>Sort By</SelectLabel>

@@ -15,13 +15,14 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import useApiQuery from "@/hooks/useApiQuery";
 import { MoviesListFilters } from "@/types/api";
+import { SearchParams } from "@/enums/searchParams";
 
 export default function Home() {
   const { getApiQuery, setApiQuery } = useApiQuery();
-  const page = getApiQuery('page');
-  const language = getApiQuery('with_original_language');
-  const genre = getApiQuery('with_genres');
-  const sortBy = getApiQuery('sort_by');
+  const page = getApiQuery(SearchParams.PAGE);
+  const language = getApiQuery(SearchParams.WITH_ORIGINAL_LANGUAGE);
+  const genre = getApiQuery(SearchParams.WITH_GENRES);
+  const sortBy = getApiQuery(SearchParams.SORT_BY);
 
   const filtersObj = useMemo(() => {
     const filters: MoviesListFilters = {};
@@ -48,7 +49,7 @@ export default function Home() {
   const isEmptyResults = hasData && data.results.length === 0;
 
   const handlePageChange = (nextPage: string) => {
-    setApiQuery({ key: "page", value: nextPage });
+    setApiQuery({ key: SearchParams.PAGE, value: nextPage });
     window.scrollTo(0, 0);
   };
   
