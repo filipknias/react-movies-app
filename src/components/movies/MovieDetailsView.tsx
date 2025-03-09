@@ -1,4 +1,5 @@
 import { MovieDetails } from "@/types/models";
+import { formatDate } from "@/utilities/formatDate";
 import { 
   GridItem, 
   Heading, 
@@ -80,7 +81,7 @@ export default function MovieDetailsView({ movieDetails }: MovieDetailsViewProps
               <Stat.Root>
                 <Stat.Label>Votes Average</Stat.Label>
                 <Stat.ValueText>
-                  {movieDetails.vote_average}
+                  {movieDetails.vote_average.toFixed(2)}
                 </Stat.ValueText>
               </Stat.Root>
             </GridItem>
@@ -96,7 +97,7 @@ export default function MovieDetailsView({ movieDetails }: MovieDetailsViewProps
               <Stat.Root>
                 <Stat.Label>Release Date</Stat.Label>
                 <Stat.ValueText>
-                  {movieDetails.release_date}
+                  {formatDate(movieDetails.release_date)}
                 </Stat.ValueText>
               </Stat.Root>
             </GridItem>
