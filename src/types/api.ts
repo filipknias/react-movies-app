@@ -16,3 +16,10 @@ export type MoviesListError = {
   status_message: string;
   success: boolean;
 }
+
+export type MoviesListFilters = {
+  with_original_language?: string;
+  language?: string;
+  with_genres?: string;
+  sort_by?: string;
+};

@@ -1,4 +1,4 @@
-import { MoviesListFilters, getMoviesList } from "@/api/moviesApi";
+import { getMoviesList } from "@/api/moviesApi";
 import ErrorBox from "@/components/common/ErrorBox";
 import Pagination from "@/components/common/Pagination";
 import MovieCard from "@/components/movies/MovieCard";
@@ -14,6 +14,7 @@ import FiltersGroup from "@/components/movies/FiltersGroup";
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import useApiQuery from "@/hooks/useApiQuery";
+import { MoviesListFilters } from "@/types/api";
 
 export default function Home() {
   const { getApiQuery, setApiQuery } = useApiQuery();
@@ -47,7 +48,8 @@ export default function Home() {
   const isEmptyResults = hasData && data.results.length === 0;
 
   const handlePageChange = (nextPage: string) => {
-    setApiQuery({ key: "page", value: nextPage }, true);
+    setApiQuery({ key: "page", value: nextPage });
+    window.scrollTo(0, 0);
   };
   
   return (

@@ -1,14 +1,7 @@
-import { MoviesListResponse, MoviesListError, GenresListResponse } from "@/types/api";
+import { MoviesListResponse, MoviesListError, GenresListResponse, MoviesListFilters } from "@/types/api";
 import { MovieDetails, SpokenLanguage } from "@/types/models";
 
 const BASE_URL = "https://api.themoviedb.org/3";
-
-export type MoviesListFilters = {
-  with_original_language?: string;
-  language?: string;
-  with_genres?: string;
-  sort_by?: string;
-};
 
 export async function getMoviesList(page: number = 1, filters: MoviesListFilters  ): Promise<MoviesListResponse|MoviesListError> {
   const queryParams = new URLSearchParams(filters);
@@ -21,16 +14,12 @@ export async function getMoviesList(page: number = 1, filters: MoviesListFilters
 };
 
 export async function getMovieDetails(id: string): Promise<MovieDetails|MoviesListError> {
-  try {
-    const response = await fetch(`${BASE_URL}/movie/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${import.meta.env.VITE_MOVIEDB_API_KEY}`,
-      },
-    });
-    return response.json();
-  } catch (err) {
-    throw Error("message");
-  }
+  const response = await fetch(`${BASE_URL}/movie/${id}`, {
+    headers: {
+      "Authorization": `Bearer ${import.meta.env.VITE_MOVIEDB_API_KEY}`,
+    },
+  });
+  return response.json();
 }
 
 export async function getLanguages(): Promise<SpokenLanguage[]|MoviesListError> {
